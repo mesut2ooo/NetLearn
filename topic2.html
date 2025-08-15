@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCP/IP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazir:wght@400;700&family=Orbitron:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --dark-gradient: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            --neon-blue: #00d4ff;
+            --neon-pink: #ff0080;
+            --neon-green: #39ff14;
+            --neon-purple: #bf00ff;
+            --neon-orange: #ff6600;
+            --neon-red: #ff073a;
+            --neon-cyan: #00ffff;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazir', sans-serif;
+            background: var(--dark-gradient);
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Network-themed animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .data-packet {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: packetFlow 8s linear infinite;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .data-packet:nth-child(2n) {
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+            animation-delay: -2s;
+            animation-duration: 6s;
+        }
+
+        .data-packet:nth-child(3n) {
+            background: var(--neon-pink);
+            box-shadow: 0 0 10px var(--neon-pink);
+            animation-delay: -4s;
+            animation-duration: 10s;
+        }
+
+        @keyframes packetFlow {
+            0% {
+                transform: translateX(-100px) translateY(0px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateX(calc(100vw + 100px)) translateY(-200px);
+                opacity: 0;
+            }
+        }
+
+        /* Network connection lines */
+        .network-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .connection-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            opacity: 0.3;
+            animation: dataFlow 4s ease-in-out infinite;
+        }
+
+        @keyframes dataFlow {
+            0%, 100% {
+                opacity: 0.1;
+                transform: scaleX(0.5);
+            }
+            50% {
+                opacity: 0.6;
+                transform: scaleX(1);
+            }
+        }
+
+        /* Header with cyberpunk styling */
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: slideInDown 1s ease;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        header h1 {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 2rem;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            animation: networkPulse 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes networkPulse {
+            from { filter: drop-shadow(0 0 20px var(--neon-cyan)); }
+            to { filter: drop-shadow(0 0 30px var(--neon-blue)); }
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border: 1px solid transparent;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 25px;
+            padding: 1px;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-blue));
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover::before {
+            opacity: 1;
+        }
+
+        nav a:hover {
+            color: var(--neon-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 255, 255, 0.3);
+        }
+
+        /* Main course page with protocol theme */
+        main.course-page {
+            max-width: 1100px;
+            margin: 4rem auto;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            padding: 3rem;
+            border-radius: 30px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            animation: protocolFloat 10s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-page::before {
+            content: '';
+            position: absolute;
+            top: -150%;
+            left: -150%;
+            width: 400%;
+            height: 400%;
+            background: conic-gradient(
+                from 0deg,
+                transparent,
+                var(--neon-cyan),
+                transparent,
+                var(--neon-blue),
+                transparent
+            );
+            animation: protocolRotate 20s linear infinite;
+            z-index: -1;
+            border-radius: 50%;
+            opacity: 0.03;
+        }
+
+        @keyframes protocolFloat {
+            0%, 100% { transform: translateY(0px) rotateX(0deg); }
+            33% { transform: translateY(-10px) rotateX(1deg); }
+            66% { transform: translateY(5px) rotateX(-0.5deg); }
+        }
+
+        @keyframes protocolRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        main h2 {
+            font-family: 'Orbitron', monospace;
+            text-align: center;
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-blue), var(--neon-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: protocolShimmer 5s ease-in-out infinite;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+            position: relative;
+        }
+
+        main h2::after {
+            content: "://";
+            font-family: 'Fira Code', monospace;
+            position: absolute;
+            right: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neon-green);
+            font-size: 1.5rem;
+            animation: protocolBlink 2s ease-in-out infinite;
+        }
+
+        @keyframes protocolShimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes protocolBlink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        main > p {
+            text-align: center;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Protocol lesson sections */
+        .lesson {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 2.5rem;
+            border-radius: 25px;
+            margin-bottom: 2.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            animation: protocolPulse 8s ease-in-out infinite;
+        }
+
+        .lesson:nth-child(2) { 
+            animation-delay: -2.6s; 
+            border-left: 4px solid var(--neon-green);
+        }
+        .lesson:nth-child(3) { 
+            animation-delay: -5.2s; 
+            border-left: 4px solid var(--neon-blue);
+        }
+        .lesson:nth-child(4) { 
+            animation-delay: -7.8s; 
+            border-left: 4px solid var(--neon-pink);
+        }
+
+        @keyframes protocolPulse {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-8px) scale(1.01); }
+        }
+
+        .lesson::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(0, 255, 255, 0.1),
+                rgba(0, 212, 255, 0.1),
+                transparent
+            );
+            transition: left 0.8s ease;
+            z-index: 0;
+        }
+
+        .lesson:hover::before {
+            left: 100%;
+        }
+
+        .lesson:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.4),
+                0 0 50px rgba(0, 255, 255, 0.3);
+            border-color: var(--neon-cyan);
+        }
+
+        .lesson h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .lesson h3::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: var(--neon-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--neon-cyan);
+            animation: statusBlink 2s ease-in-out infinite;
+        }
+
+        .lesson:nth-child(2) h3 { color: var(--neon-green); }
+        .lesson:nth-child(2) h3::before { 
+            background: var(--neon-green); 
+            box-shadow: 0 0 15px var(--neon-green);
+        }
+
+        .lesson:nth-child(3) h3 { color: var(--neon-blue); }
+        .lesson:nth-child(3) h3::before { 
+            background: var(--neon-blue); 
+            box-shadow: 0 0 15px var(--neon-blue);
+        }
+
+        .lesson:nth-child(4) h3 { color: var(--neon-pink); }
+        .lesson:nth-child(4) h3::before { 
+            background: var(--neon-pink); 
+            box-shadow: 0 0 15px var(--neon-pink);
+        }
+
+        @keyframes statusBlink {
+            0%, 50% { opacity: 1; transform: scale(1); }
+            51%, 100% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .lesson p {
+            opacity: 0.9;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Protocol-specific styling */
+        .lesson:nth-child(2) {
+            background: linear-gradient(135deg, 
+                rgba(57, 255, 20, 0.05), 
+                rgba(0, 255, 255, 0.05)
+            );
+        }
+
+        .lesson:nth-child(3) {
+            background: linear-gradient(135deg, 
+                rgba(0, 212, 255, 0.05), 
+                rgba(191, 0, 255, 0.05)
+            );
+        }
+
+        .lesson:nth-child(4) {
+            background: linear-gradient(135deg, 
+                rgba(255, 0, 128, 0.05), 
+                rgba(255, 102, 0, 0.05)
+            );
+        }
+
+        /* Enhanced back button */
+        .back-button {
+            display: block;
+            width: fit-content;
+            margin: 3rem auto 0;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-blue));
+            color: #fff;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+            border: 2px solid transparent;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .back-button:hover::before {
+            left: 100%;
+        }
+
+        .back-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.5);
+            border-color: var(--neon-cyan);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 1rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(0, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+        }
+
+        footer p {
+            font-size: 1rem;
+            opacity: 0.8;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        /* Progress indicator */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-blue));
+            z-index: 10000;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        /* Protocol status indicators */
+        .protocol-status {
+            position: fixed;
+            top: 120px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            border-radius: 15px;
+            border: 1px solid var(--neon-cyan);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            z-index: 999;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        .status-dot.tcp { background: var(--neon-green); }
+        .status-dot.ip { background: var(--neon-blue); }
+        .status-dot.udp { background: var(--neon-pink); }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        /* Animations */
+        @keyframes slideInDown {
+            from { transform: translateY(-100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            main.course-page {
+                margin: 2rem 1rem;
+                padding: 2rem;
+            }
+            
+            main h2 {
+                font-size: 2rem;
+            }
+            
+            main h2::after {
+                right: -40px;
+                font-size: 1rem;
+            }
+            
+            header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .lesson {
+                padding: 2rem;
+            }
+
+            .protocol-status {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Network-themed animated background -->
+    <div class="bg-animation"></div>
+    <div class="network-lines"></div>
+    
+    <!-- Progress bar -->
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <!-- Protocol status panel -->
+    <div class="protocol-status">
+        <div class="status-item">
+            <div class="status-dot tcp"></div>
+            <span>TCP: ACTIVE</span>
+        </div>
+        <div class="status-item">
+            <div class="status-dot ip"></div>
+            <span>IP: ROUTING</span>
+        </div>
+        <div class="status-item">
+            <div class="status-dot udp"></div>
+            <span>UDP: STREAMING</span>
+        </div>
+    </div>
+    
+    <header>
+        <div class="container">
+            <h1>آموزش شبکه</h1>
+            <nav>
+                <a href="index.html">صفحه اصلی</a>
+                <a href="about.html">درباره ما</a>
+                <a href="contact.html">تماس با ما</a>
+                <a href="login.html">ورود</a>
+                <a href="signup.html">ثبت نام</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="course-page">
+        <h2>دوره TCP/IP</h2>
+        <p>در این درس، با پروتکل TCP/IP و نحوه انتقال داده در شبکه آشنا می‌شوید.</p>
+        
+        <section class="lesson">
+            <h3>1. پروتکل TCP</h3>
+            <p>TCP پروتکلی قابل اطمینان است که تضمین می‌کند داده‌ها بدون خطا به مقصد برسند.</p>
+        </section>
+        
+        <section class="lesson">
+            <h3>2. پروتکل IP</h3>
+            <p>IP مسئول آدرس‌دهی و مسیریابی بسته‌های داده در شبکه است.</p>
+        </section>
+        
+        <section class="lesson">
+            <h3>3. UDP و دیگر پروتکل‌ها</h3>
+            <p>UDP پروتکلی سبک و بدون تضمین است، مناسب برای ویدیو، صوت و بازی‌های آنلاین.</p>
+        </section>
+        
+        <a href="index.html" class="back-button">بازگشت به صفحه اصلی</a>
+    </main>
+
+    <footer>
+        <p>© 2025 همه حقوق محفوظ تیم وب سایت نویسان رجایی است.</p>
+    </footer>
+
+    <script>
+        // Create animated data packets
+        function createDataPackets() {
+            const container = document.querySelector('.bg-animation');
+            for (let i = 0; i < 30; i++) {
+                const packet = document.createElement('div');
+                packet.className = 'data-packet';
+                packet.style.top = Math.random() * 100 + '%';
+                packet.style.animationDelay = Math.random() * 8 + 's';
+                packet.style.animationDuration = (Math.random() * 6 + 4) + 's';
+                container.appendChild(packet);
+            }
+        }
+
+        // Create network connection lines
+        function createNetworkLines() {
+            const container = document.querySelector('.network-lines');
+            for (let i = 0; i < 15; i++) {
+                const line = document.createElement('div');
+                line.className = 'connection-line';
+                line.style.top = Math.random() * 100 + '%';
+                line.style.left = Math.random() * 100 + '%';
+                line.style.width = Math.random() * 200 + 100 + 'px';
+                line.style.animationDelay = Math.random() * 4 + 's';
+                line.style.transform = `rotate(${Math.random() * 360}deg)`;
+                container.appendChild(line);
+            }
+        }
+
+        // Protocol simulation effect
+        function simulateProtocolActivity() {
+            const lessons = document.querySelectorAll('.lesson');
+            
+            lessons.forEach((lesson, index) => {
+                lesson.addEventListener('mouseenter', () => {
+                    // Create data flow effect
+                    for (let i = 0; i < 5; i++) {
+                        setTimeout(() => {
+                            const flowElement = document.createElement('div');
+                            flowElement.style.position = 'absolute';
+                            flowElement.style.width = '4px';
+                            flowElement.style.height = '4px';
+                            flowElement.style.background = ['var(--neon-cyan)', 'var(--neon-green)', 'var(--neon-pink)'][index];
+                            flowElement.style.borderRadius = '50%';
+                            flowElement.style.left = Math.random() * lesson.offsetWidth + 'px';
+                            flowElement.style.top = Math.random() * lesson.offsetHeight + 'px';
+                            flowElement.style.pointerEvents = 'none';
+                            flowElement.style.opacity = '0.8';
+                            flowElement.style.animation = 'packetBurst 1s ease-out forwards';
+                            
+                            lesson.appendChild(flowElement);
+                            
+                            setTimeout(() => flowElement.remove(), 1000);
+                        }, i * 100);
+                    }
+                });
+            });
+        }
+
+        // Progress bar
+        function updateProgressBar() {
+            const progressBar = document.getElementById('progressBar');
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrollPercent = (scrollTop / scrollHeight) * 100;
+            progressBar.style.width = scrollPercent + '%';
+        }
+
+        // Protocol status animation
+        function animateProtocolStatus() {
+            const statusItems = document.querySelectorAll('.status-item');
+            statusItems.forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.animation = 'fadeIn 0.5s ease forwards';
+                }, index * 200);
+            });
+        }
+
+        // Mouse data trail
+        function createDataTrail() {
+            document.addEventListener('mousemove', (e) => {
+                if (Math.random() > 0.7) { // Create trail occasionally
+                    const trail = document.createElement('div');
+                    trail.style.position = 'fixed';
+                    trail.style.left = e.clientX + 'px';
+                    trail.style.top = e.clientY + 'px';
+                    trail.style.width = '3px';
+                    trail.style.height = '3px';
+                    trail.style.background = 'var(--neon-cyan)';
+                    trail.style.borderRadius = '50%';
+                    trail.style.pointerEvents = 'none';
+                    trail.style.zIndex = '9999';
+                    trail.style.opacity = '0.8';
+                    trail.style.boxShadow = '0 0 5px var(--neon-cyan)';
+                    trail.style.animation = 'dataFade 0.8s ease-out forwards';
+                    document.body.appendChild(trail);
+                    
+                    setTimeout(() => trail.remove(), 800);
+                }
+            });
+        }
+
+        // Add packet burst animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes packetBurst {
+                0% {
+                    transform: scale(0) rotate(0deg);
+                    opacity: 1;
+                }
+                100% {
+                    transform: scale(3) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+            
+            @keyframes dataFade {
+                0% {
+                    transform: scale(1);
+                    opacity: 0.8;
+                }
+                100% {
+                    transform: scale(2);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize all effects
+        document.addEventListener('DOMContentLoaded', () => {
+            createDataPackets();
+            createNetworkLines();
+            simulateProtocolActivity();
+            animateProtocolStatus();
+            createDataTrail();
+            
+            // Update progress bar on scroll
+            window.addEventListener('scroll', updateProgressBar);
+        });
+    </script>
+</body>
+</html>

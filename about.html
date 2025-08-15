@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>درباره ما - آموزش شبکه</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazir:wght@400;700&family=Orbitron:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --dark-gradient: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            --neon-blue: #00d4ff;
+            --neon-pink: #ff0080;
+            --neon-green: #39ff14;
+            --neon-purple: #bf00ff;
+            --neon-orange: #ff6600;
+            --neon-red: #ff073a;
+            --neon-cyan: #00ffff;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazir', sans-serif;
+            background: var(--dark-gradient);
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Network-themed animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .data-packet {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--neon-blue);
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: packetFlow 8s linear infinite;
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .data-packet:nth-child(2n) {
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+            animation-delay: -2s;
+            animation-duration: 6s;
+        }
+
+        .data-packet:nth-child(3n) {
+            background: var(--neon-pink);
+            box-shadow: 0 0 10px var(--neon-pink);
+            animation-delay: -4s;
+            animation-duration: 10s;
+        }
+
+        @keyframes packetFlow {
+            0% {
+                transform: translateX(-100px) translateY(0px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateX(calc(100vw + 100px)) translateY(-200px);
+                opacity: 0;
+            }
+        }
+
+        /* Network connection lines */
+        .network-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .connection-line {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+            opacity: 0.3;
+            animation: dataFlow 4s ease-in-out infinite;
+        }
+
+        @keyframes dataFlow {
+            0%, 100% {
+                opacity: 0.1;
+                transform: scaleX(0.5);
+            }
+            50% {
+                opacity: 0.6;
+                transform: scaleX(1);
+            }
+        }
+
+        /* Header with cyberpunk styling */
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: slideInDown 1s ease;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: auto;
+        }
+
+        header h1 {
+            font-family: 'Orbitron', monospace;
+            font-weight: 900;
+            font-size: 2rem;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            animation: networkPulse 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes networkPulse {
+            from { filter: drop-shadow(0 0 20px var(--neon-cyan)); }
+            to { filter: drop-shadow(0 0 30px var(--neon-blue)); }
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border: 1px solid transparent;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 25px;
+            padding: 1px;
+            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-blue));
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        nav a:hover::before {
+            opacity: 1;
+        }
+
+        nav a:hover {
+            color: var(--neon-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 255, 255, 0.3);
+        }
+
+        nav a.active {
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            color: #fff;
+            font-weight: 600;
+        }
+
+        nav a.active:hover {
+            color: #fff;
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Main content with cyberpunk styling */
+        main.content-page {
+            flex: 1;
+            max-width: 1000px;
+            margin: 4rem auto;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            padding: 4rem;
+            border-radius: 25px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: contentFloat 1.5s ease;
+        }
+
+        main.content-page::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: conic-gradient(
+                from 0deg,
+                transparent,
+                var(--neon-blue),
+                transparent,
+                var(--neon-purple),
+                transparent
+            );
+            animation: contentRotate 25s linear infinite;
+            z-index: -1;
+            border-radius: 50%;
+            opacity: 0.05;
+        }
+
+        @keyframes contentFloat {
+            0% { 
+                opacity: 0; 
+                transform: translateY(50px) scale(0.95);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes contentRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        main.content-page h2 {
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+            position: relative;
+            z-index: 1;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        main.content-page h2::after {
+            content: "[ABOUT]";
+            font-family: 'Fira Code', monospace;
+            position: absolute;
+            right: -120px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neon-green);
+            font-size: 0.8rem;
+            animation: aboutBlink 2s ease-in-out infinite;
+            border: 2px solid var(--neon-green);
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+        }
+
+        @keyframes titleGlow {
+            from { filter: drop-shadow(0 0 20px var(--neon-blue)); }
+            to { filter: drop-shadow(0 0 30px var(--neon-purple)); }
+        }
+
+        @keyframes aboutBlink {
+            0%, 50% { opacity: 1; box-shadow: 0 0 15px var(--neon-green); }
+            51%, 100% { opacity: 0.3; box-shadow: none; }
+        }
+
+        /* Enhanced content styling */
+        .content-section {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 3rem;
+        }
+
+        .content-section h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.5rem;
+            color: var(--neon-cyan);
+            margin-bottom: 2rem;
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            position: relative;
+        }
+
+        .content-section h3::before {
+            content: '▶';
+            color: var(--neon-green);
+            margin-left: 1rem;
+            animation: arrowPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes arrowPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        main.content-page p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+            text-align: justify;
+            padding: 0 1rem;
+        }
+
+        /* Network topology visualization */
+        .network-visual {
+            position: relative;
+            height: 200px;
+            margin: 3rem 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .network-node {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--neon-blue);
+            box-shadow: 0 0 20px var(--neon-blue);
+            animation: nodePulse 3s ease-in-out infinite;
+        }
+
+        .network-node:nth-child(2) {
+            background: var(--neon-green);
+            box-shadow: 0 0 20px var(--neon-green);
+            animation-delay: -1s;
+        }
+
+        .network-node:nth-child(3) {
+            background: var(--neon-purple);
+            box-shadow: 0 0 20px var(--neon-purple);
+            animation-delay: -2s;
+        }
+
+        @keyframes nodePulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.5); }
+        }
+
+        /* Team info cards */
+        .team-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .info-card {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .info-card:hover::before {
+            left: 100%;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-blue);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .info-card h4 {
+            font-family: 'Orbitron', monospace;
+            color: var(--neon-cyan);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .info-card p {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 0;
+            padding: 0;
+        }
+
+        /* Skills/Technologies section */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+            justify-content: center;
+        }
+
+        .tech-item {
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            color: #fff;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            font-weight: 500;
+            animation: techFloat 3s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .tech-item:nth-child(even) {
+            background: linear-gradient(45deg, var(--neon-green), var(--neon-cyan));
+            animation-delay: -1s;
+        }
+
+        .tech-item:nth-child(3n) {
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
+            animation-delay: -2s;
+        }
+
+        @keyframes techFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.5);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 1rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            position: relative;
+            z-index: 1;
+            margin-top: auto;
+        }
+
+        footer p {
+            font-size: 1rem;
+            opacity: 0.8;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            header h1 {
+                font-size: 1.5rem;
+            }
+
+            main.content-page {
+                margin: 2rem 1rem;
+                padding: 2rem;
+            }
+
+            main.content-page h2 {
+                font-size: 2rem;
+            }
+
+            main.content-page h2::after {
+                right: -90px;
+                font-size: 0.7rem;
+                padding: 0.2rem 0.4rem;
+            }
+
+            main.content-page p {
+                font-size: 1rem;
+                padding: 0;
+            }
+
+            .team-info {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-stack {
+                justify-content: center;
+            }
+        }
+
+        /* Animations */
+        @keyframes slideInDown {
+            from { transform: translateY(-100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Network-themed animated background -->
+    <div class="bg-animation"></div>
+    <div class="network-lines"></div>
+    
+    <header>
+        <div class="container">
+            <h1>آموزش شبکه</h1>
+            <nav>
+                <a href="index.html">صفحه اصلی</a>
+                <a href="about.html" class="active">درباره ما</a>
+                <a href="contact.html">تماس با ما</a>
+                <a href="login.html">ورود</a>
+                <a href="signup.html">ثبت نام</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="content-page">
+        <h2>درباره ما</h2>
+        
+        <div class="content-section">
+            <h3>ماموریت ما</h3>
+            <p>
+                ما تیمی از علاقه‌مندان شبکه هستیم که هدفمان آموزش مفاهیم پایه و پیشرفته شبکه به زبان ساده است.
+                در این وبسایت، شما می‌توانید دوره‌های عملی و آموزشی در زمینه مدل OSI، TCP/IP و ابزارهای شبکه پیدا کنید.
+            </p>
+        </div>
+
+        <div class="network-visual">
+            <div class="network-node" style="top: 50%; left: 20%;"></div>
+            <div class="network-node" style="top: 30%; left: 50%;"></div>
+            <div class="network-node" style="top: 70%; left: 80%;"></div>
+        </div>
+
+        <div class="content-section">
+            <h3>تخصص‌های ما</h3>
+            <div class="tech-stack">
+                <span class="tech-item">OSI Model</span>
+                <span class="tech-item">TCP/IP</span>
+                <span class="tech-item">Routing</span>
+                <span class="tech-item">Switching</span>
+                <span class="tech-item">Security</span>
+                <span class="tech-item">Cisco</span>
+                <span class="tech-item">Wireshark</span>
+                <span class="tech-item">Network Monitoring</span>
+            </div>
+        </div>
+
+        <div class="team-info">
+            <div class="info-card">
+                <h4>آموزش عملی</h4>
+                <p>تمرکز بر آموزش‌های کاربردی و عملی که بتوانید در محیط کار استفاده کنید.</p>
+            </div>
+            <div class="info-card">
+                <h4>پشتیبانی مداوم</h4>
+                <p>همیشه در کنار شما هستیم تا در مسیر یادگیری شبکه پیشرفت کنید.</p>
+            </div>
+            <div class="info-card">
+                <h4>محتوای به‌روز</h4>
+                <p>آموزش‌های ما با جدیدترین تکنولوژی‌ها و استانداردهای صنعت همراه است.</p>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h3>چشم‌انداز ما</h3>
+            <p>
+                هدف ما ایجاد یک جامعه قدرتمند از متخصصان شبکه در ایران است که بتوانند با دانش روز دنیا گام بردارند
+                و در عصر دیجیتال نقش مؤثری ایفا کنند. ما معتقدیم که با آموزش درست، هر کسی می‌تواند در این حوزه موفق شود.
+            </p>
+        </div>
+
+        <div class="content-section">
+            <h3>اعضای تیم</h3>
+                <p>مسعود قلی پور شهرکی </p>
+                <p>امیرحسین محمدی </p>
+                <p>میر مهدی موسوی </p>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 همه حقوق محفوظ تیم وب سایت نویسان رجایی است </p>
+    </footer>
+
+    <script>
+        // Create animated data packets
+        function createDataPackets() {
+            const container = document.querySelector('.bg-animation');
+            for (let i = 0; i < 25; i++) {
+                const packet = document.createElement('div');
+                packet.className = 'data-packet';
+                packet.style.top = Math.random() * 100 + '%';
+                packet.style.animationDelay = Math.random() * 8 + 's';
+                packet.style.animationDuration = (Math.random() * 6 + 4) + 's';
+                container.appendChild(packet);
+            }
+        }
+
+        // Create network connection lines
+        function createNetworkLines() {
+            const container = document.querySelector('.network-lines');
+            for (let i = 0; i < 12; i++) {
+                const line = document.createElement('div');
+                line.className = 'connection-line';
+                line.style.top = Math.random() * 100 + '%';
+                line.style.left = Math.random() * 100 + '%';
+                line.style.width = Math.random() * 200 + 100 + 'px';
+                line.style.animationDelay = Math.random() * 4 + 's';
+                line.style.transform = `rotate(${Math.random() * 360}deg)`;
+                container.appendChild(line);
+            }
+        }
+
+        // Network nodes connection animation
+        function createNetworkConnections() {
+            const visual = document.querySelector('.network-visual');
+            const nodes = document.querySelectorAll('.network-node');
+            
+            // Create connecting lines between nodes
+            for (let i = 0; i < nodes.length - 1; i++) {
+                const line = document.createElement('div');
+                line.style.position = 'absolute';
+                line.style.height = '1px';
+                line.style.background = 'linear-gradient(90deg, transparent, var(--neon-cyan), transparent)';
+                line.style.opacity = '0.4';
+                line.style.animation = 'dataFlow 3s ease-in-out infinite';
+                line.style.animationDelay = (i * 0.5) + 's';
+                line.style.transformOrigin = 'left center';
+                
+                // Calculate position and angle
+                const rect1 = nodes[i].getBoundingClientRect();
+                const rect2 = nodes[i + 1].getBoundingClientRect();
+                const visualRect = visual.getBoundingClientRect();
+                
+                const x1 = rect1.left - visualRect.left + rect1.width / 2;
+                const y1 = rect1.top - visualRect.top + rect1.height / 2;
+                const x2 = rect2.left - visualRect.left + rect2.width / 2;
+                const y2 = rect2.top - visualRect.top + rect2.height / 2;
+                
+                const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+                const angle = Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI;
+                
+                line.style.left = x1 + 'px';
+                line.style.top = y1 + 'px';
+                line.style.width = length + 'px';
+                line.style.transform = `rotate(${angle}deg)`;
+                
+                visual.appendChild(line);
+            }
+        }
+
+        // Initialize all effects
+        document.addEventListener('DOMContentLoaded', () => {
+            createDataPackets();
+            createNetworkLines();
+            
+            // Delay network connections creation to ensure proper positioning
+            setTimeout(createNetworkConnections, 500);
+        });
+    </script>
+</body>
+</html>
