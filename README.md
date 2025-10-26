@@ -24,21 +24,9 @@ This demo site was created as a university project and redesigned for clarity an
 Update with real steps for your stack. Example for a typical Node/Express setup:
 
 ```bash
-git clone https://github.com/mesut2ooo/netlearn-demo.git
-cd netlearn-demo
-npm install
-cp .env.example .env   # set DB connection and secrets
-npm run migrate        # if migrations exist
-npm start
-```
-
-Visit `http://localhost:3000`.
-
----
-
-## Content & licensing
-
-All learning content is original or properly referenced. If you used third-party diagrams or text, credit sources in the footer.
+git clone https://github.com/mesut2ooo/netlearn.git
+cd netlearn
+open the index page with a browser
 
 ---
 
@@ -50,9 +38,3 @@ Include a link or a screenshot directory (`/screenshots`) showing:
 * Article page
 * Admin dashboard
 * Mobile view
-
----
-
-## Why this matters
-
-Shows your ability to build a full-stack, localized, and secure web app — a great signal for roles in networking documentation, support portals, or junior web development.
